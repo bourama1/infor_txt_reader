@@ -1,0 +1,14 @@
+[project]
+name = "infor-txt-reader"
+version = "0.1.0"
+description = "Parsing Infor BOM text files into structured data"
+authors = [
+    { name = "Matej Boura", email = "m.boura@toors.cz" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
