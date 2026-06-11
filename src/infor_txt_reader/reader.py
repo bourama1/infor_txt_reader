@@ -1,5 +1,6 @@
 import re
 
+
 class InforReader:
     """
     Reader for Infor BOM text files.
@@ -17,12 +18,16 @@ class InforReader:
         self.special_item_re = re.compile(r"Manufactured Item\s*:\s*([A-Z0-9]+)/(\d+)")
 
         # Patterns for configuration blocks
-        self.block_start_re = re.compile(r"\|\s*Prod\. Var\. Options for Item", re.IGNORECASE)
+        self.block_start_re = re.compile(
+            r"\|\s*Prod\. Var\. Options for Item", re.IGNORECASE
+        )
         self.name_line_re = re.compile(r"\|\s*(.*?)\s+Option Set", re.IGNORECASE)
         self.section_name_re = re.compile(r"^\d+\..*section", re.IGNORECASE)
 
         # Pattern for feature lines: | Code | Desc | Value | ...
-        self.feature_re = re.compile(r"\|\s*([A-Z0-9]+)\s*\|\s*[^|]+\s*\|\s*([^|]+)\s*\|")
+        self.feature_re = re.compile(
+            r"\|\s*([A-Z0-9]+)\s*\|\s*[^|]+\s*\|\s*([^|]+)\s*\|"
+        )
 
     def read(self, file_path: str) -> list[dict]:
         """
@@ -52,7 +57,9 @@ class InforReader:
                     if match:
                         global_date = match.group(1).strip()
                         if current_config:
-                            current_config["meta"]["product_configuration_date"] = global_date
+                            current_config["meta"]["product_configuration_date"] = (
+                                global_date
+                            )
 
                 # --- Manufactured Item Identification ---
                 if "Manufactured Item" in line:
@@ -68,7 +75,9 @@ class InforReader:
                         if key not in result_map:
                             new_config = {"meta": {}}
                             if global_date:
-                                new_config["meta"]["product_configuration_date"] = global_date
+                                new_config["meta"]["product_configuration_date"] = (
+                                    global_date
+                                )
                             result_map[key] = new_config
                             results.append(new_config)
                         current_config = result_map[key]
@@ -93,7 +102,9 @@ class InforReader:
                                 if key not in result_map:
                                     new_config = {"meta": {}}
                                     if global_date:
-                                        new_config["meta"]["product_configuration_date"] = global_date
+                                        new_config["meta"][
+                                            "product_configuration_date"
+                                        ] = global_date
                                     result_map[key] = new_config
                                     results.append(new_config)
                                 current_config = result_map[key]
